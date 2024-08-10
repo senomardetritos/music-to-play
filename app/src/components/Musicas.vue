@@ -54,11 +54,15 @@
 	const musicas_marcadas = ref({});
 
 	onMounted(async () => {
+		await loadData();
+	});
+
+	async function loadData() {
 		lista.value = null;
 		const res = await api.get('musicas/?action=musicas&cantor=' + props.cantor);
 		lista.value = res.data.data;
 		musicas_marcadas.value = JSON.parse(localStorage.musicas_marcadas);
-	});
+	}
 
 	function voltar() {
 		router.push('/cantores/' + props.estilo);
@@ -82,9 +86,17 @@
 		router.push('/editar-musica/' + item.id);
 	}
 
-	function excluir(item) {
+	async function excluir(item) {
 		if (confirm('Deseja excluir ' + item.musica + '?')) {
-			console.log(item);
+			const res = await api.post('musicas/?action=deletar', {
+				id: item.id,
+			});
+			if (res.data.error) {
+				error.value = res.data.error;
+			} else {
+				alert('Música deletada com sucesso');
+				await loadData();
+			}
 		}
 	}
 </script>

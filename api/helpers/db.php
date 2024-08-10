@@ -216,4 +216,21 @@ class DB
         $query = $this->insertSQL($table, $data);
         return $this->execute($query);
     }
+
+    public function deleteSQL($table, $where)
+    {
+        $query = ['DELETE FROM'];
+        $query[] = $table;
+        $query[] = 'WHERE';
+        $query[] = $this->where($where);
+
+        $query = implode(' ', $query);
+        return $query;
+    }
+
+    public function delete($table, $where)
+    {
+        $query = $this->deleteSQL($table, $where);
+        return $this->execute($query);
+    }
 }

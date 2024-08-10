@@ -104,6 +104,19 @@ class Musicas
             echo json_encode(['error' => 'Erro ao cadastrar música']);
         }
     }
+
+    public static function deletar()
+    {
+        $post = json_decode(file_get_contents('php://input'));
+        $db = new DB();
+        $usuarios_id = $db->check_login();
+        $db->delete('musicas', [
+            ['id', '=', DB::data($post->id)],
+            'and',
+            ['usuarios_id', '=', DB::data($usuarios_id)]
+        ]);
+        echo json_encode(['data' => 'Deletada']);
+    }
 }
 
 $action = $_REQUEST['action'];
