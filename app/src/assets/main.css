@@ -36,3 +36,8 @@ main .router-view {
 	background: #890d0d !important;
 	border: 0 !important;
 }
+
+.btn.btn-success {
+	background: #0d8953 !important;
+	border: 0 !important;
+}
